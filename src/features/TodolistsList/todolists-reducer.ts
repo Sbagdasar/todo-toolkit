@@ -1,4 +1,4 @@
-import { todolistsAPI, TodolistType } from "api/todolists-api";
+import { todolistsAPI, TodoListType } from "api/todolists-api";
 import { Dispatch } from "redux";
 import { appActions, RequestStatusType } from "app/app-reducer";
 import { handleServerNetworkError } from "utils/error-utils";
@@ -16,7 +16,7 @@ const slice = createSlice({
       let index = state.findIndex((tl) => tl.id == action.payload.id);
       if (index !== -1) state.splice(index, 1);
     },
-    addTodolist: (state, action: PayloadAction<{ todolist: TodolistType }>) => {
+    addTodolist: (state, action: PayloadAction<{ todolist: TodoListType }>) => {
       state.unshift({ ...action.payload.todolist, filter: "all", entityStatus: "idle" });
     },
     changeTodolistTitle: (state, action: PayloadAction<{ id: string; title: string }>) => {
@@ -31,7 +31,7 @@ const slice = createSlice({
       let index = state.findIndex((tl) => tl.id == action.payload.id);
       if (index !== -1) state[index].entityStatus = action.payload.entityStatus;
     },
-    setTodolists: (state, action: PayloadAction<{ todolists: Array<TodolistType> }>) => {
+    setTodolists: (state, action: PayloadAction<{ todolists: Array<TodoListType> }>) => {
       return action.payload.todolists.map((tl: any) => ({ ...tl, filter: "all", entityStatus: "idle" }));
     },
   },
@@ -88,7 +88,7 @@ export const changeTodolistTitleTC = (id: string, title: string) => {
 };
 
 export type FilterValuesType = "all" | "active" | "completed";
-export type TodolistDomainType = TodolistType & {
+export type TodolistDomainType = TodoListType & {
   filter: FilterValuesType;
   entityStatus: RequestStatusType;
 };

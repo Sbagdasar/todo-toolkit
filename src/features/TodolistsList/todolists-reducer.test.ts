@@ -1,6 +1,6 @@
 import { FilterValuesType, TodolistDomainType, todolistsActions, todolistsReducer } from "./todolists-reducer";
 import { v1 } from "uuid";
-import { TodolistType } from "api/todolists-api";
+import { TodoListType } from "api/todolists-api";
 import { RequestStatusType } from "app/app-reducer";
 
 let todolistId1: string;
@@ -24,7 +24,7 @@ test("correct todolist should be removed", () => {
 });
 
 test("correct todolist should be added", () => {
-  let todolist: TodolistType = {
+  let todolist: TodoListType = {
     title: "New Todolist",
     id: "any id",
     addedDate: "",
