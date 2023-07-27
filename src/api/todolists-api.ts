@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UpdateDomainTaskModelType } from "features/TodolistsList/tasks-reducer";
 
 const settings = {
   withCredentials: true,
@@ -14,32 +15,28 @@ const instance = axios.create({
 // api
 export const todolistsAPI = {
   getTodolists() {
-    const promise = instance.get<TodoListType[]>("todo-lists");
-    return promise;
+    return instance.get<TodoListType[]>("todo-lists");
   },
   createTodolist(title: string) {
-    const promise = instance.post<ResponseType<{ item: TodoListType }>>("todo-lists", { title: title });
-    return promise;
+    return instance.post<ResponseType<{ item: TodoListType }>>("todo-lists", { title: title });
   },
   deleteTodolist(id: string) {
-    const promise = instance.delete<ResponseType>(`todo-lists/${id}`);
-    return promise;
+    return instance.delete<ResponseType>(`todo-lists/${id}`);
   },
   updateTodolist(id: string, title: string) {
-    const promise = instance.put<ResponseType>(`todo-lists/${id}`, { title: title });
-    return promise;
+    return instance.put<ResponseType>(`todo-lists/${id}`, { title: title });
   },
   getTasks(todoListId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todoListId}/tasks`);
   },
-  deleteTask(todoListId: string, taskId: string) {
-    return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${taskId}`);
+  deleteTask(arg: deleteTaskArgType) {
+    return instance.delete<ResponseType>(`todo-lists/${arg.todoListId}/tasks/${arg.taskId}`);
   },
   createTask(arg: AddTaskArgType) {
     return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${arg.todoListId}/tasks`, { title: arg.title });
   },
-  updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-    return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+  updateTask(todolistId: string, taskId: string, domainModel: UpdateTaskModelType) {
+    return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, domainModel);
   },
 };
 
@@ -121,4 +118,13 @@ type GetTasksResponse = {
 export type AddTaskArgType = {
   title: string;
   todoListId: string;
+};
+export type UpdateTaskArgType = {
+  taskId: string;
+  domainModel: UpdateDomainTaskModelType;
+  todolistId: string;
+};
+export type deleteTaskArgType = {
+  todoListId: string;
+  taskId: string;
 };
